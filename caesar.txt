@@ -1,79 +1,65 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
 
-#define MAX_LEN 1000
-
-char* encrypt(const char *plaintext, int key) {
-    int i;
-    char ch;
-    char encrypted_text = (char) malloc(strlen(plaintext) * sizeof(char) + 1);
-
-    for (i = 0; plaintext[i] != '\0'; i++) {
-        ch = plaintext[i];
-
-        if (ch >= 'a' && ch <= 'z') {
-            ch = 'a' + ((ch - 'a' + key) % 26);
-        } else if (ch >= 'A' && ch <= 'Z') {
-            ch = 'A' + ((ch - 'A' + key) % 26);
-        }
-
-        encrypted_text[i] = ch;
-    }
-
-    encrypted_text[i] = '\0';
-
-    return encrypted_text;
-}
-
-char* decrypt(const char *ciphertext, int key) {
-    int i;
-    char ch;
-    char decrypted_text = (char) malloc(strlen(ciphertext) * sizeof(char) + 1);
-
-    for (i = 0; ciphertext[i] != '\0'; i++) {
-        ch = ciphertext[i];
-
-        if (ch >= 'a' && ch <= 'z') {
-            ch = 'a' + ((ch - 'a' - key + 26) % 26);
-        } else if (ch >= 'A' && ch <= 'Z') {
-            ch = 'A' + ((ch - 'A' - key + 26) % 26);
-        }
-
-        decrypted_text[i] = ch;
-    }
-
-    decrypted_text[i] = '\0';
-
-    return decrypted_text;
-}
-
-int main() {
-    char plaintext[MAX_LEN];
-    char *ciphertext;
-    char *decrypted_text;
-    int key;
-
-    printf("Enter plaintext to encrypt: ");
-    fgets(plaintext, MAX_LEN, stdin);
-
-    printf("Enter key: ");
-    scanf("%d", &key);
-    key = key % 26;
-
-    // Remove the trailing newline from fgets
-    plaintext[strcspn(plaintext, "\n")] = '\0';
-
-    ciphertext = encrypt(plaintext, key);
-
-    printf("Ciphertext: %s\n", ciphertext);
-
-    decrypted_text = decrypt(ciphertext, key);
-
-    printf("Plaintext(decrypted): %s\n", decrypted_text);
-
-    free(ciphertext);
-    free(decrypted_text);
-
-    return 0;
+int main()
+{
+  char mes[10],emes[10],dec[10];
+  int key;
+  char ch;
+  printf("Enter the text\n");
+  scanf("%s",mes);
+  printf("Enter the key\n");
+  scanf("%d",&key);
+  
+  for(int i=0;mes[i]!='\0';i++)
+  {
+     ch = mes[i];
+     if(ch>='a' && ch<='z')
+     {
+         ch = ch+key;
+         if(ch>'z')
+         {
+         ch = ch-'z'+'a'-1;
+         }
+         emes[i]=ch;
+     }
+     else if(ch>='A' && ch<='Z')
+     {
+         ch = ch+key;
+         if(ch>'Z')
+         {
+         ch = ch-'Z'+'A'-1;
+         }
+         emes[i]=ch;
+     }
+  }
+   
+  printf("encrypted mes: %s \n",emes);
+  
+   for(int i=0;mes[i]!='\0';i++)
+  {
+     ch = emes[i];
+     if(ch>='a' && ch<='z')
+     {
+         ch = ch-key;
+         if(ch<'a')
+         {
+         ch = 'z'-('a'-ch-1);
+         }
+         dec[i]=ch;
+     }
+     else if(ch>='A' && ch<='Z')
+     {
+         ch = ch-key;
+         if(ch<'A')
+         {
+         ch ='Z'-('A'-ch-1) ;
+         }
+         dec[i]=ch;
+     }
+  }
+   
+  printf("decrypted mes: %s \n",dec);
+  
 }
